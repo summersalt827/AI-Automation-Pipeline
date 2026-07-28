@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI News & Skills — 全自动社媒工厂架构</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -24,7 +24,7 @@
     --warn: #e0a655;
     --slide-w: 960px;
     --slide-h: 540px;
-    font-family: 'Inter', 'Noto Sans SC', 'PingFang SC', sans-serif;
+    font-family: 'Inter', 'JetBrains Mono', 'Noto Sans SC', 'PingFang SC', sans-serif;
     font-size: 16px;
     color: var(--text);
     background: var(--bg);
@@ -348,6 +348,14 @@
 </head>
 <body>
 
+<!-- Terminal top bar -->
+<div style="position:fixed;top:0;left:0;right:0;height:32px;background:#161b22;border-bottom:1px solid #30363d;display:flex;align-items:center;padding:0 14px;gap:8px;z-index:1001">
+  <span style="width:10px;height:10px;border-radius:50%;background:#ff5f56"></span>
+  <span style="width:10px;height:10px;border-radius:50%;background:#ffbd2e"></span>
+  <span style="width:10px;height:10px;border-radius:50%;background:#27c93f"></span>
+  <span style="margin-left:12px;font-size:11px;color:#8b949e;font-family:'JetBrains Mono',monospace">ai-news-xiaohongshu/ — 花叔v风格 · 终端实战 · 真人录音 · 纯录屏</span>
+</div>
+
 <div class="progress-bar" id="progress"></div>
 
 <!-- ━━━━━━━━━━━━━━━━━━ Slide 0 · 开场 ━━━━━━━━━━━━━━━━━━ -->
@@ -365,7 +373,7 @@
       </div>
       <div class="arch-box green">
         <strong>视频发布引擎</strong>
-        <small>小红书 · B站 · FFmpeg + TTS</small>
+        <small>小红书 · B站 · FFmpeg + 真人录音</small>
       </div>
       <div class="arch-box warm">
         <strong>AI Tour 教学网站</strong>
@@ -387,7 +395,7 @@
     <span class="tag blue">Bing</span>
     <span class="tag blue">GitHub API</span>
     <span class="tag green">FFmpeg</span>
-    <span class="tag green">Azure TTS</span>
+    <span class="tag green">真人录音</span>
     <span class="tag green">Playwright</span>
     <span class="tag">Vercel</span>
     <span class="tag">飞书</span>
@@ -457,7 +465,7 @@
     <div class="pipe-step">
       <div class="step-num">3</div>
       <div class="step-name">渲染</div>
-      <div class="step-detail">HTML卡片→PNG<br>FFmpeg视频<br>TTS语音合成</div>
+      <div class="step-detail">HTML卡片→PNG<br>FFmpeg视频<br>真人录音</div>
     </div>
     <div class="pipe-arrow">→</div>
     <div class="pipe-step">
@@ -481,7 +489,7 @@
     <div class="layer-card l3">
       <div class="layer-num">LAYER 3</div>
       <div class="layer-title">视觉渲染 · 设计token外部化</div>
-      <div class="layer-tech">Playwright @2x 截图 2160×2880<br>FFmpeg 合成 + Azure/智谱 TTS<br>颜色/字号全在 brands/*.json，不碰代码</div>
+      <div class="layer-tech">Playwright @2x 截图 2160×2880<br>FFmpeg 合成 + 真人录音<br>颜色/字号全在 brands/*.json，不碰代码</div>
     </div>
     <div class="layer-card l4">
       <div class="layer-num">LAYER 4</div>
@@ -570,7 +578,7 @@
         </div>
       </div>
       <div style="margin-top:8px;font-size:10px;color:var(--text3)">
-        9:16 视频 · Azure TTS 语音 · BGM 混音
+        9:16 视频 · 真人录音 · BGM 混音
       </div>
     </div>
 
@@ -595,7 +603,7 @@
         </div>
       </div>
       <div style="margin-top:8px;font-size:10px;color:var(--text3)">
-        16:9 视频 · 智谱 TTS · FFmpeg 合成
+        16:9 视频 · 真人录音 · FFmpeg 合成
       </div>
     </div>
   </div>
@@ -605,7 +613,7 @@
       🎨 品牌 JSON → 设计 token → Card HTML → Playwright @2x PNG
     </div>
     <div style="padding:5px 14px;border-radius:20px;background:rgba(77,166,217,.1);border:1px solid rgba(77,166,217,.2);font-size:10px;color:var(--text2)">
-      🎬 Card PNGs → FFmpeg + TTS + BGM → mp4 双格式
+      🎬 Card PNGs → FFmpeg + 真人录音 + BGM → mp4 双格式
     </div>
   </div>
 </div>
@@ -777,7 +785,7 @@
     <div style="border-radius:12px;border:2px solid var(--accent);overflow:hidden">
       <div style="background:var(--accent);color:#000;padding:6px 14px;font-size:10px;font-weight:800;letter-spacing:1px">✅ P0 · 已完成</div>
       <div style="padding:12px 14px;font-size:11px;line-height:1.6">
-        <strong>✅ Failover 链</strong><br><span style="color:var(--text3)">Azure TTS → 智谱TTS 降级<br>circuit_breaker.py 容错</span><br><br>
+        <strong>✅ 真人录音</strong><br><span style="color:var(--text3)">录音 → 降噪 → 剪辑<br>circuit_breaker.py 容错</span><br><br>
         <strong>✅ 合规引用</strong><br><span style="color:var(--text3)">卡片 source_note 标注信源<br>render_combined.py</span>
       </div>
     </div>
@@ -857,7 +865,7 @@
   <div style="margin-top:28px;text-align:center">
     <div style="font-size:14px;color:var(--text2);margin-bottom:4px">理解这三条原则，你搭出来的会比我的更好</div>
     <div style="font-size:28px;font-weight:900;margin-top:12px;letter-spacing:-0.5px">
-      <span style="color:var(--primary)">程序员老崔</span>
+      <span style="color:var(--primary)">小H的AI进化论</span>
     </div>
     <div class="tag-row" style="margin-top:14px">
       <span class="tag blue">#AI自动化</span>

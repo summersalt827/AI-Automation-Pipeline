@@ -176,6 +176,7 @@ def distill_github_items(repos: list[dict]) -> list[dict[str, str]]:
     items: list[dict[str, str]] = []
     for item in parsed:
         item["source_type"] = "github"
+        item.setdefault("source_note", "GitHub Trending")
         item.setdefault("title", "")
         item.setdefault("summary", "")
         item.setdefault("why_care", "")
@@ -198,6 +199,7 @@ def _fallback_github_items(repos: list[dict]) -> list[dict[str, str]]:
 
         items.append({
             "source_type": "github",
+            "source_note": "GitHub Trending",
             "title": name.split("/")[-1] if "/" in name else name,
             "summary": desc,
             "why_care": f'GitHub 上最近很火的开源项目，{stars} 人已收藏',

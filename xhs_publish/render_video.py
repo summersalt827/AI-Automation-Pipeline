@@ -19,6 +19,12 @@ import sys
 import tempfile
 from datetime import date
 from pathlib import Path
+from typing import Optional
+
+try:
+    from news_pipeline.footage_finder import FootageResult
+except ImportError:
+    FootageResult = None  # type: ignore
 
 # ═══════════════════════════════════════════════════════════════════
 # Config
@@ -198,7 +204,7 @@ def _render_card_16x9(w, h, emoji, title, summary, detail, why_care,
 
     return f"""<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@500;700;900&display=swap');
+/* system fonts */
 *{{margin:0;padding:0;box-sizing:border-box}}
 body{{width:{w}px;height:{h}px;overflow:hidden;
   font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
@@ -300,7 +306,7 @@ def _render_card_9x16(w, h, emoji, title, summary, detail, why_care,
 
     return f"""<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@500;700;900&display=swap');
+/* system fonts */
 *{{margin:0;padding:0;box-sizing:border-box}}
 body{{width:{w}px;height:{h}px;overflow:hidden;
   font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
@@ -419,7 +425,7 @@ def _render_cover_html(items: list[dict], date_str: str, aspect: str) -> str:
 
     return f"""<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@500;700;900&display=swap');
+/* system fonts */
 *{{margin:0;padding:0;box-sizing:border-box}}
 body{{width:{w}px;height:{h}px;overflow:hidden;
   font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
@@ -553,7 +559,7 @@ def _render_title_card_html(item: dict, date_str: str, aspect: str) -> str:
 
     return f"""<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@1,500;1,600&family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@500;700;900&display=swap');
+/* system fonts */
 *{{margin:0;padding:0;box-sizing:border-box}}
 body{{width:{w}px;height:{h}px;overflow:hidden;
   display:flex;align-items:center;justify-content:center;
@@ -736,7 +742,7 @@ def _record_page(html_path: Path, duration: float,
             record_video_size={"width": width, "height": height},
         )
         page = context.new_page()
-        page.goto(file_uri, wait_until="networkidle", timeout=30000)
+        page.goto(file_uri, wait_until="domcontentloaded", timeout=30000)
 
         # Wait for animations to complete
         page.wait_for_timeout(int(duration * 1000))
@@ -810,7 +816,7 @@ def _concat_segments(segments: list[dict], output: Path,
                 "-c:a", "aac", "-b:a", "128k",
                 "-shortest",
                 str(output),
-            ], capture_output=True, text=True, timeout=120)
+            ], capture_output=True, text=True, timeout=600)
             if result.returncode != 0:
                 raise RuntimeError(f"concat failed:\n{result.stderr[-400:]}")
         else:
@@ -850,9 +856,9 @@ def _mix_bgm(video_path: Path, bgm_path: str, output: Path) -> Path:
             "-i", str(video_path),
             "-stream_loop", "-1", "-i", bgm_path,
             "-filter_complex",
-            f"[1:a]atrim=0:{duration:.1f},volume=0.1,afade=t=in:d=1.5,afade=t=out:st={duration-3:.1f}:d=3[bgm];"
-            f"[0:a]volume=1.3[narr];"
-            f"[narr][bgm]amix=inputs=2:duration=first:weights=1 0.3[outa]",
+            f"[1:a]atrim=0:{duration:.1f},volume=0.25,afade=t=in:d=1.5,afade=t=out:st={duration-3:.1f}:d=3[bgm];"
+            f"[0:a]volume=1.2[narr];"
+            f"[narr][bgm]amix=inputs=2:duration=first:weights=1 0.5[outa]",
             "-map", "0:v", "-map", "[outa]",
             "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
             "-shortest",
@@ -861,6 +867,110 @@ def _mix_bgm(video_path: Path, bgm_path: str, output: Path) -> Path:
         return output
     finally:
         shutil.rmtree(tmp_dir, ignore_errors=True)
+
+
+# ═══════════════════════════════════════════════════════════════════
+# Footage segment — real video clip + text overlay
+# ═══════════════════════════════════════════════════════════════════
+
+def _render_footage_combined_html(
+    item: dict, w: int, h: int,
+    date_str: str, idx: int, total: int,
+    footage_url: str,
+) -> str:
+    """HTML page with footage as video background + text overlay on top."""
+    raw_title = item.get("title", "")
+    # Use same punchline text as narration for consistency
+    hl = _split_headline(raw_title)
+    title = html.escape(hl.get("cn_punchline", raw_title) or raw_title)
+    source = html.escape(item.get("source_note", ""))
+    kps = item.get("key_points", [])
+    if isinstance(kps, str):
+        kps = [p.strip() for p in kps.split("\n") if p.strip()][:2]
+    date_disp = date.fromisoformat(date_str).strftime("%Y年%m月%d日")
+    is_github = "github" in item.get("source_note", "").lower()
+
+    cat = "GitHub 热门" if is_github else "AI 要闻"
+    accent = "#1ca77a" if is_github else "#1d6fb5"
+
+    fs = lambda base: int(base * w / 3840)
+
+    kp_html = ""
+    if kps:
+        colors = ["#d97757", "#629987"]
+        for i, pt in enumerate(kps[:2]):
+            c = colors[i % 2]
+            kp_html += (
+                f'<div style="font-size:{fs(28)}px;margin-bottom:{fs(8)}px;color:#ccc">'
+                f'<b style="color:{c}">{"①②"[i]}</b> {html.escape(pt)}</div>'
+            )
+
+    return f"""<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<style>
+*{{margin:0;padding:0;box-sizing:border-box}}
+body{{
+  width:{w}px;height:{h}px;overflow:hidden;
+  background:#000;
+  font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+  -webkit-font-smoothing:antialiased;
+}}
+video.bg{{
+  position:absolute;top:0;left:0;width:{w}px;height:{h}px;object-fit:cover;z-index:0;
+}}
+.overlay{{
+  position:absolute;bottom:0;left:0;right:0;z-index:1;
+  padding:{fs(80)}px {fs(140)}px {fs(70)}px;
+  background:linear-gradient(0deg,rgba(0,0,0,0.9) 0%,rgba(0,0,0,0.5) 60%,transparent 100%);
+  display:flex;flex-direction:column;gap:{fs(16)}px;
+}}
+.top-row{{display:flex;align-items:center;gap:{fs(20)}px;margin-bottom:{fs(6)}px}}
+.tag{{font-family:'Space Mono',monospace;font-size:{fs(24)}px;font-weight:700;
+  color:{accent};letter-spacing:2px;}}
+.meta{{font-family:'Space Mono',monospace;font-size:{fs(20)}px;color:#999;margin-left:auto}}
+.title{{font-size:{fs(60)}px;font-weight:900;color:#fff;line-height:1.15;word-break:break-word}}
+.key-points{{display:flex;flex-direction:column;margin-top:{fs(8)}px}}
+.footer{{font-size:{fs(20)}px;color:{accent};margin-top:{fs(10)}px;
+  font-family:'Space Mono',monospace;}}
+</style></head><body>
+<video class="bg" src="{footage_url}" autoplay muted loop playsinline></video>
+<div class="overlay">
+<div class="top-row">
+  <span class="tag">● {idx:02d} / {cat}</span>
+  <span class="meta">{date_disp} · {source}</span>
+</div>
+<div class="title">{title}</div>
+<div class="key-points">{kp_html}</div>
+<div class="footer">{source} · {date_disp}</div>
+</div>
+</body></html>"""
+
+
+def _create_footage_segment(
+    footage_path: Path,
+    item: dict,
+    narration_aac: Optional[Path],
+    duration: float,
+    output_path: Path,
+    width: int,
+    height: int,
+    date_str: str,
+    idx: int,
+    total: int,
+) -> Path:
+    """Record combined HTML page (footage video bg + text overlay) via Playwright."""
+
+    html_path = output_path.with_suffix(".html")
+    footage_url = footage_path.as_uri()
+    html_path.write_text(
+        _render_footage_combined_html(
+            item, width, height, date_str, idx, total, footage_url
+        ),
+        encoding="utf-8",
+    )
+
+    _record_page(html_path, duration, width, height, output_path)
+    html_path.unlink(missing_ok=True)
+    return output_path
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -875,6 +985,7 @@ def render_video_from_items(
     aspect: str = "16:9",
     transition: str = "fade",
     bgm_path: str = "",
+    footage_map: dict[int, object] | None = None,
 ) -> Path:
     """items → animated HTML → record segments → concat with narration → .mp4
 
@@ -929,22 +1040,34 @@ def render_video_from_items(
 
         # --- Cards ---
         for i, item in enumerate(items, 1):
-            # 1. Write HTML
-            card_html = segments_dir / f"card_{i:02d}_{aspect.replace(':','x')}.html"
-            card_html.write_text(
-                _render_card_html(item, i, len(items), date_str, aspect),
-                encoding="utf-8",
-            )
+            # 0. Check for real footage
+            footage = None
+            if footage_map and FootageResult is not None:
+                raw = footage_map.get(i)
+                if raw is not None:
+                    try:
+                        if isinstance(raw, FootageResult):
+                            footage = raw
+                        elif hasattr(raw, 'source_type'):
+                            footage = raw
+                    except Exception:
+                        pass
 
-            # 2. Generate narration, pad to match segment
+            has_footage = (footage is not None and
+                           getattr(footage, 'source_type', 'none') != 'none' and
+                           getattr(footage, 'video_path', None) is not None)
+
+            # 1. Generate narration, pad to match segment
             title_text = item.get("title", "")
+            hl = _split_headline(title_text)
+            headline_text = hl.get("cn_punchline", title_text) or title_text
             source_note = item.get("source_note", "")
             is_github = "github" in source_note.lower()
             if title_text:
                 if is_github:
-                    narrate = f"今天GitHub上最火的开源项目。{title_text}"
+                    narrate = f"今天GitHub上最火的开源项目。{headline_text}"
                 else:
-                    narrate = f"{title_text}"
+                    narrate = f"{headline_text}"
                 card_aac_raw = segments_dir / f"card_{i:02d}_narration_raw.aac"
                 _narration_to_aac(narrate, card_aac_raw)
                 card_narr_dur = _get_audio_duration(card_aac_raw)
@@ -954,9 +1077,29 @@ def render_video_from_items(
                 card_aac = None
                 card_dur = 5.0
 
-            # 3. Record video to match narration duration
-            card_mp4 = segments_dir / f"card_{i:02d}.mp4"
-            _record_page(card_html, card_dur, w, h, card_mp4)
+            # 2. Record video — footage or card animation
+            if has_footage:
+                fp = getattr(footage, 'video_path')
+                card_mp4 = segments_dir / f"card_{i:02d}_footage.mp4"
+                _create_footage_segment(
+                    footage_path=Path(fp),
+                    item=item,
+                    narration_aac=card_aac,
+                    duration=card_dur,
+                    output_path=card_mp4,
+                    width=w, height=h,
+                    date_str=date_str,
+                    idx=i, total=len(items),
+                )
+            else:
+                card_html = segments_dir / f"card_{i:02d}_{aspect.replace(':','x')}.html"
+                card_html.write_text(
+                    _render_card_html(item, i, len(items), date_str, aspect),
+                    encoding="utf-8",
+                )
+                card_mp4 = segments_dir / f"card_{i:02d}.mp4"
+                _record_page(card_html, card_dur, w, h, card_mp4)
+
             segments.append({
                 "path": card_mp4, "duration": card_dur,
                 "narration_aac": card_aac,
