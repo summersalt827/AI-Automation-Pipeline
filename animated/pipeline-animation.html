@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>4-Layer Pipeline Animation</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:#1a1918;font-family:'Inter','PingFang SC',sans-serif;
+  display:flex;align-items:center;justify-content:center;min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+.pipeline{display:flex;flex-direction:column;gap:0;width:900px}
+.layer{
+  display:flex;align-items:center;gap:28px;
+  padding:28px 36px;border-left:4px solid;
+  background:rgba(255,255,255,0.03);margin-bottom:4px;
+  opacity:0;animation:fadeIn 0.6s ease forwards;
+}
+.layer:nth-child(1){animation-delay:0.2s;border-color:#d97757}
+.layer:nth-child(2){animation-delay:0.7s;border-color:#629987}
+.layer:nth-child(3){animation-delay:1.2s;border-color:#6a9bcc}
+.layer:nth-child(4){animation-delay:1.7s;border-color:#7b7cb8}
+@keyframes fadeIn{to{opacity:1}}
+.layer-num{
+  width:56px;height:56px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;font-weight:900;color:#fff;flex-shrink:0;
+}
+.layer:nth-child(1) .layer-num{background:#d97757}
+.layer:nth-child(2) .layer-num{background:#629987}
+.layer:nth-child(3) .layer-num{background:#6a9bcc}
+.layer:nth-child(4) .layer-num{background:#7b7cb8}
+.layer-info{flex:1}
+.layer-name{font-size:20px;font-weight:800;color:#faf9f5;margin-bottom:6px}
+.layer-desc{font-size:13px;color:#87867f;line-height:1.5}
+.layer-icon{font-size:36px;flex-shrink:0}
+.pipe-indicator{
+  display:flex;align-items:center;justify-content:center;
+  color:#444;font-size:18px;padding:4px 0 4px 56px;
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:0.3}50%{opacity:1}}
+.flow-line{
+  height:24px;width:2px;background:linear-gradient(180deg,#d97757,#629987);margin-left:56px;
+  animation:glow 2s ease-in-out infinite;
+}
+@keyframes glow{0%,100%{opacity:0.2}50%{opacity:0.8}}
+h2{color:#d97757;font-size:28px;text-align:center;margin-bottom:40px;font-weight:800}
+</style>
+</head>
+<body>
+<div>
+<h2>4-Layer Content Pipeline</h2>
+<div class="pipeline">
+  <div class="layer">
+    <div class="layer-num">1</div>
+    <div class="layer-info">
+      <div class="layer-name">采集 · Collect</div>
+      <div class="layer-desc">fetch_ai_news.py → 163 邮箱 IMAP → Claude 翻译 → web_scraper.py 全网抓取 5 源</div>
+    </div>
+    <div class="layer-icon">📥</div>
+  </div>
+  <div class="flow-line"></div>
+  <div class="layer">
+    <div class="layer-num">2</div>
+    <div class="layer-info">
+      <div class="layer-name">精选 · Curate</div>
+      <div class="layer-desc">item_matcher.py → Claude 去重+打分+挑 6-8 条 → 终端等待人工 y/n 确认</div>
+    </div>
+    <div class="layer-icon">🔍</div>
+  </div>
+  <div class="flow-line"></div>
+  <div class="layer">
+    <div class="layer-num">3</div>
+    <div class="layer-info">
+      <div class="layer-name">渲染 · Render</div>
+      <div class="layer-desc">render_combined.py → HTML 卡片 1080×1440 → Playwright @2x PNG → FFmpeg 视频</div>
+    </div>
+    <div class="layer-icon">🎨</div>
+  </div>
+  <div class="flow-line"></div>
+  <div class="layer">
+    <div class="layer-num">4</div>
+    <div class="layer-info">
+      <div class="layer-name">分发 · Distribute</div>
+      <div class="layer-desc">小红书 Playwright 自动上传 · B站 · 飞书 Webhook · Vercel 部署</div>
+    </div>
+    <div class="layer-icon">🚀</div>
+  </div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Feedback Loop — 反馈闭环</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:#1a1918;font-family:'Inter','PingFang SC',sans-serif;
+  display:flex;align-items:center;justify-content:center;min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+.container{width:960px;position:relative}
+h2{color:#faf9f5;font-size:26px;text-align:center;margin-bottom:40px;font-weight:800}
+.loop{display:flex;align-items:center;justify-content:center;gap:0;position:relative}
+.node{
+  width:160px;height:160px;border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;position:relative;z-index:2;
+}
+.node-label{font-size:14px;font-weight:800;margin-bottom:6px}
+.node-desc{font-size:11px;opacity:0.7;line-height:1.4;padding:0 12px}
+.n1{background:rgba(217,119,87,0.2);border:2px solid #d97757;color:#d97757}
+.n2{background:rgba(98,153,135,0.2);border:2px solid #629987;color:#8bc4b2}
+.n3{background:rgba(106,155,204,0.2);border:2px solid #6a9bcc;color:#9bbddd}
+.n4{background:rgba(123,124,184,0.2);border:2px solid #7b7cb8;color:#a8a8d6}
+.arrow-connector{
+  display:flex;align-items:center;color:#444;font-size:28px;z-index:2;
+  animation:arrowPulse 1.5s ease-in-out infinite;
+}
+.arrow-connector:nth-child(2){animation-delay:0s}
+.arrow-connector:nth-child(4){animation-delay:0.3s}
+.arrow-connector:nth-child(6){animation-delay:0.6s}
+.arrow-connector:nth-child(8){animation-delay:0.9s}
+@keyframes arrowPulse{0%,100%{opacity:0.3;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
+.feedback-arc{
+  position:absolute;bottom:-60px;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:12px;color:#87867f;
+  font-size:13px;font-weight:600;z-index:1;
+  animation:slideUp 2s ease-in-out infinite;
+}
+@keyframes slideUp{0%,100%{opacity:0.4;transform:translateX(-50%) translateY(4px)}50%{opacity:1;transform:translateX(-50%) translateY(0)}}
+.feedback-arc .arc-label{color:#d97757;font-weight:700}
+.center-text{text-align:center;margin-top:60px;color:#87867f;font-size:13px}
+.center-text span{color:#d97757;font-weight:700}
+</style>
+</head>
+<body>
+<div class="container">
+<h2>Feedback Loop — 反馈闭环</h2>
+<div class="loop">
+  <div class="node n1">
+    <span class="node-label">📥 采集</span>
+    <span class="node-desc">邮件+全网<br>信息入库</span>
+  </div>
+  <div class="arrow-connector">→</div>
+  <div class="node n2">
+    <span class="node-label">🔍 精选</span>
+    <span class="node-desc">Claude 打分<br>人工确认</span>
+  </div>
+  <div class="arrow-connector">→</div>
+  <div class="node n3">
+    <span class="node-label">🎨 渲染</span>
+    <span class="node-desc">HTML+截图<br>视频合成</span>
+  </div>
+  <div class="arrow-connector">→</div>
+  <div class="node n4">
+    <span class="node-label">📊 分析</span>
+    <span class="node-desc">互动数据<br>反馈评分</span>
+  </div>
+</div>
+<div class="feedback-arc">
+  ← <span class="arc-label">数据反馈优化采集策略</span> ←
+</div>
+<div class="center-text">数据驱动 · <span>闭环优化</span> · 每次发布都是一次学习</div>
+</div>
+</body>
+</html>

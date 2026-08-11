@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  width:1080px;
+  background:#1a1918;font-family:'Inter','PingFang SC',sans-serif;
+  display:flex;align-items:center;justify-content:center;min-height:1440px;
+  -webkit-font-smoothing:antialiased;
+}
+.container{width:960px;position:relative}
+h2{color:#faf9f5;font-size:36px;text-align:center;margin-bottom:52px;font-weight:800}
+.loop{display:flex;align-items:center;justify-content:center;gap:0;position:relative;margin-bottom:70px}
+.node{
+  width:210px;height:210px;border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;position:relative;z-index:2;
+}
+.node-label{font-size:22px;font-weight:800;margin-bottom:8px}
+.node-desc{font-size:15px;opacity:0.75;line-height:1.5;padding:0 16px}
+.n1{background:rgba(217,119,87,0.18);border:3px solid #d97757;color:#d97757}
+.n2{background:rgba(98,153,135,0.18);border:3px solid #629987;color:#8bc4b2}
+.n3{background:rgba(106,155,204,0.18);border:3px solid #6a9bcc;color:#9bbddd}
+.n4{background:rgba(123,124,184,0.18);border:3px solid #7b7cb8;color:#a8a8d6}
+.arrow-connector{
+  display:flex;align-items:center;color:#555;font-size:40px;z-index:2;
+  margin:0 8px;
+}
+.n1 .node-icon,.n2 .node-icon,.n3 .node-icon,.n4 .node-icon{font-size:36px;margin-bottom:6px}
+.feedback-arc{
+  text-align:center;color:#87867f;
+  font-size:18px;font-weight:600;
+  margin-bottom:32px;
+}
+.feedback-arc .arc-label{color:#d97757;font-weight:700;font-size:22px}
+.center-text{text-align:center;color:#87867f;font-size:17px}
+.center-text span{color:#d97757;font-weight:700}
+.footer-note{text-align:center;margin-top:48px;color:#555;font-size:15px}
+.footer-note span{color:#d97757}
+</style>
+</head>
+<body>
+<div class="container">
+<h2>Feedback Loop — 反馈闭环</h2>
+<div class="loop">
+  <div class="node n1">
+    <span class="node-icon">📥</span>
+    <span class="node-label">采集</span>
+    <span class="node-desc">邮件+全网<br>信息入库</span>
+  </div>
+  <div class="arrow-connector">→</div>
+  <div class="node n2">
+    <span class="node-icon">🔍</span>
+    <span class="node-label">精选</span>
+    <span class="node-desc">Claude 打分<br>人工确认</span>
+  </div>
+  <div class="arrow-connector">→</div>
+  <div class="node n3">
+    <span class="node-icon">🎨</span>
+    <span class="node-label">渲染</span>
+    <span class="node-desc">HTML+截图<br>视频合成</span>
+  </div>
+  <div class="arrow-connector">→</div>
+  <div class="node n4">
+    <span class="node-icon">📊</span>
+    <span class="node-label">分析</span>
+    <span class="node-desc">互动数据<br>反馈评分</span>
+  </div>
+</div>
+<div class="feedback-arc">
+  ← <span class="arc-label">数据反馈优化采集策略</span> ←
+</div>
+<div class="center-text">数据驱动 · <span>闭环优化</span> · 每次发布都是一次学习</div>
+<div class="footer-note">小H的AI进化论 · <span>AI News 反馈闭环</span></div>
+</div>
+</body>
+</html>

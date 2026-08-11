@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>文案对比 — 多平台适配</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:#faf9f5;font-family:'Inter','PingFang SC',sans-serif;
+  padding:48px 60px;display:flex;flex-direction:column;gap:32px;
+  -webkit-font-smoothing:antialiased;
+}
+h1{font-size:28px;font-weight:800;color:#141413;margin-bottom:4px}
+.subtitle{font-size:15px;color:#87867f;margin-bottom:24px}
+.platform-row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.platform-card{
+  background:#fff;border:1px solid #e8e6dc;border-radius:16px;
+  padding:28px 30px;box-shadow:0 2px 12px rgba(0,0,0,0.03);
+}
+.platform-card .name{font-size:13px;font-weight:700;color:#d97757;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+.platform-card .text{font-size:14px;color:#30302e;line-height:1.7;white-space:pre-wrap}
+.tag-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.tag{font-size:11px;font-weight:700;color:#a1a09e;background:#f5f4ed;border-radius:100px;padding:4px 12px}
+.arrow-row{display:flex;align-items:center;justify-content:center;gap:80px;padding:16px 0}
+.arrow{font-size:24px;color:#d97757}
+.from-box,.to-box{
+  background:#fff;border:1px solid #e8e6dc;border-radius:12px;
+  padding:20px 28px;text-align:center;
+}
+.from-box .label{font-size:11px;color:#87867f;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.from-box .value{font-size:22px;font-weight:800;color:#141413}
+</style>
+</head>
+<body>
+<h1>一条内容，多平台适配</h1>
+<p class="subtitle">Claude 根据平台调性自动改写 — 同源内容，不同表达</p>
+
+<div class="arrow-row">
+  <div class="from-box"><div class="label">原始输入</div><div class="value">Claude Opus 4.6 released with 200K context, 40% retrieval improvement</div></div>
+  <div class="arrow">→</div>
+  <div class="from-box"><div class="label">Claude 改写</div><div class="value">3 个版本，3 种语气</div></div>
+</div>
+
+<div class="platform-row">
+  <div class="platform-card">
+    <div class="name">📕 小红书</div>
+    <div class="text">Claude 又更新了！这次 Opus 4.6 把 20 万字的上下文检索能力提升了 40% 📈
+说人话就是：扔一整本书进去，它也能精准找到你要的那句话。
+写论文、读合同、翻代码库——终于不用再 Ctrl+F 了 😭</div>
+    <div class="tag-row"><span class="tag">#AI工具</span><span class="tag">#效率提升</span><span class="tag">#学生党必备</span></div>
+  </div>
+  <div class="platform-card">
+    <div class="name">📺 B站</div>
+    <div class="text">Opus 4.6，200K 窗口检索准度拉满。
+今天我们实测了一下，一本 15 万字的《三体》扔进去，让它找"黑暗森林法则第一次出现的位置"——3 秒出结果，还带上下文引用。
+这不是"能读长文"，这是"能在长文里精准定位"。</div>
+    <div class="tag-row"><span class="tag">#Claude</span><span class="tag">#AI评测</span><span class="tag">#技术解读</span></div>
+  </div>
+  <div class="platform-card">
+    <div class="name">🐦 Twitter/X</div>
+    <div class="text">Opus 4.6: 200K context window + 40% better retrieval.
+Not "can read more"— can FIND what matters.
+Throw a whole codebase at it. It'll point to the exact function you need.
+This is the infra upgrade that makes agents actually useful.</div>
+    <div class="tag-row"><span class="tag">#Claude</span><span class="tag">#AIEngineering</span><span class="tag">#DevTools</span></div>
+  </div>
+</div>
+</body>
+</html>

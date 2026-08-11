@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  width:1080px;
+  background:#faf9f5;font-family:'Inter','PingFang SC',sans-serif;
+  padding:52px 60px;
+  -webkit-font-smoothing:antialiased;
+}
+.header-area{text-align:center;margin-bottom:40px}
+.label-badge{display:inline-flex;align-items:center;gap:10px;background:#fdf0eb;color:#d97757;border:2px solid #f5dbd0;border-radius:100px;padding:14px 28px;font-size:20px;font-weight:700}
+.label-badge .dot{width:10px;height:10px;border-radius:50%;background:#d97757}
+.header-area .sub{color:#87867f;font-size:18px;margin-top:12px}
+
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{
+  background:#fff;border:1.5px solid #e8e6dc;border-radius:22px;
+  padding:40px 32px;position:relative;overflow:hidden;
+  box-shadow:0 6px 24px rgba(0,0,0,0.04);
+}
+.card:nth-child(1){border-top:5px solid #d97757}
+.card:nth-child(2){border-top:5px solid #629987}
+.card:nth-child(3){border-top:5px solid #6a9bcc}
+.card:nth-child(4){border-top:5px solid #7b7cb8}
+.card:nth-child(5){border-top:5px solid #788c5d}
+.card:nth-child(6){border-top:5px solid #c46686}
+
+.num-badge{
+  position:absolute;top:20px;right:20px;width:38px;height:38px;
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:800;color:#fff;
+}
+.card:nth-child(1) .num-badge{background:#d97757}
+.card:nth-child(2) .num-badge{background:#629987}
+.card:nth-child(3) .num-badge{background:#6a9bcc}
+.card:nth-child(4) .num-badge{background:#7b7cb8}
+.card:nth-child(5) .num-badge{background:#788c5d}
+.card:nth-child(6) .num-badge{background:#c46686}
+
+.card-icon{font-size:44px;margin-bottom:22px}
+.card-tag{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#87867f;margin-bottom:14px}
+.card-title{font-size:22px;font-weight:700;color:#141413;line-height:1.3;margin-bottom:12px}
+.card-desc{font-size:16px;color:#6B6B6B;line-height:1.55}
+
+.footer-note{text-align:center;margin-top:36px;color:#87867f;font-size:15px}
+.footer-note span{color:#d97757;font-weight:700}
+</style>
+</head>
+<body>
+<div class="header-area">
+  <div class="label-badge"><span class="dot"></span>AI NEWSLETTER · 2026.07.27</div>
+  <p class="sub">每天 4 条精选，AI 小白也能看懂</p>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <div class="num-badge">01</div>
+    <div class="card-icon">🧠</div>
+    <div class="card-tag">AI Research</div>
+    <div class="card-title">Claude Opus 4.6 全面解读</div>
+    <div class="card-desc">长上下文能力再升级，200K token 窗口内精准检索率提升 40%</div>
+  </div>
+  <div class="card">
+    <div class="num-badge">02</div>
+    <div class="card-icon">🛠️</div>
+    <div class="card-tag">Dev Tools</div>
+    <div class="card-title">Claude Code 重大更新</div>
+    <div class="card-desc">新增 Agent SDK、worktree 隔离模式、MCP 并行调用支持</div>
+  </div>
+  <div class="card">
+    <div class="num-badge">03</div>
+    <div class="card-icon">📦</div>
+    <div class="card-tag">Open Source</div>
+    <div class="card-title">Meta 开源 Llama 4</div>
+    <div class="card-desc">MoE 架构，405B 总参数仅激活 40B，性能接近 GPT-5</div>
+  </div>
+  <div class="card">
+    <div class="num-badge">04</div>
+    <div class="card-icon">🎨</div>
+    <div class="card-tag">Design</div>
+    <div class="card-title">Figma AI 正式上线</div>
+    <div class="card-desc">自然语言生成 UI 组件，一键替换设计系统变量</div>
+  </div>
+  <div class="card">
+    <div class="num-badge">05</div>
+    <div class="card-icon">📱</div>
+    <div class="card-tag">Product</div>
+    <div class="card-title">Apple Intelligence 跨设备</div>
+    <div class="card-desc">iOS 20 将支持 Mac-iPhone 无缝 AI 上下文共享</div>
+  </div>
+  <div class="card">
+    <div class="num-badge">06</div>
+    <div class="card-icon">🔬</div>
+    <div class="card-tag">Research</div>
+    <div class="card-title">MCP 协议标准化推进</div>
+    <div class="card-desc">Anthropic 发布 MCP 2.0 草案，新增流式工具和多模态支持</div>
+  </div>
+</div>
+<div class="footer-note">小H的AI进化论 · <span>AI News 日报卡片展示</span></div>
+</body>
+</html>

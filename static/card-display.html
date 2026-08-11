@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>AI News 卡片展示</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:#faf9f5;font-family:'Inter','PingFang SC',sans-serif;
+  padding:40px;display:flex;flex-wrap:wrap;gap:24px;justify-content:center;
+  -webkit-font-smoothing:antialiased;
+}
+.card{
+  width:270px;background:#fff;border:1px solid #e8e6dc;border-radius:20px;
+  padding:32px 28px;position:relative;overflow:hidden;
+  box-shadow:0 4px 20px rgba(0,0,0,0.04);
+}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.card:nth-child(1)::before{background:#d97757}
+.card:nth-child(2)::before{background:#629987}
+.card:nth-child(3)::before{background:#6a9bcc}
+.card:nth-child(4)::before{background:#7b7cb8}
+.card:nth-child(5)::before{background:#788c5d}
+.card:nth-child(6)::before{background:#c46686}
+.num-badge{
+  position:absolute;top:16px;right:16px;width:30px;height:30px;
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:800;color:#fff;
+}
+.card:nth-child(1) .num-badge{background:#d97757}
+.card:nth-child(2) .num-badge{background:#629987}
+.card:nth-child(3) .num-badge{background:#6a9bcc}
+.card:nth-child(4) .num-badge{background:#7b7cb8}
+.card:nth-child(5) .num-badge{background:#788c5d}
+.card:nth-child(6) .num-badge{background:#c46686}
+.card-icon{font-size:32px;margin-bottom:18px}
+.card-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#87867f;margin-bottom:10px}
+.card-title{font-size:17px;font-weight:700;color:#141413;line-height:1.3;margin-bottom:10px}
+.card-desc{font-size:12px;color:#6B6B6B;line-height:1.5}
+.label-row{display:flex;gap:20px;margin-bottom:40px;align-items:center}
+.label-badge{display:inline-flex;align-items:center;gap:8px;background:#fdf0eb;color:#d97757;border:1.5px solid #f5dbd0;border-radius:100px;padding:10px 20px;font-size:14px;font-weight:700}
+.label-badge .dot{width:8px;height:8px;border-radius:50%;background:#d97757}
+</style>
+</head>
+<body>
+<div style="width:100%;text-align:center;margin-bottom:8px">
+  <div class="label-badge"><span class="dot"></span>AI NEWSLETTER · 2026.07.27</div>
+  <p style="color:#87867f;font-size:13px;margin-top:8px">每天 4 条，AI 小白也能看懂</p>
+</div>
+
+<div class="card"><div class="num-badge">01</div><div class="card-icon">🧠</div><div class="card-tag">AI Research</div><div class="card-title">Claude Opus 4.6 全面解读</div><div class="card-desc">长上下文能力再升级，200K token 窗口内精准检索率提升 40%</div></div>
+<div class="card"><div class="num-badge">02</div><div class="card-icon">🛠️</div><div class="card-tag">Dev Tools</div><div class="card-title">Claude Code 重大更新</div><div class="card-desc">新增 Agent SDK、worktree 隔离模式、MCP 并行调用支持</div></div>
+<div class="card"><div class="num-badge">03</div><div class="card-icon">📦</div><div class="card-tag">Open Source</div><div class="card-title">Meta 开源 Llama 4</div><div class="card-desc">MoE 架构，405B 总参数仅激活 40B，性能接近 GPT-5</div></div>
+<div class="card"><div class="num-badge">04</div><div class="card-icon">🎨</div><div class="card-tag">Design</div><div class="card-title">Figma AI 正式上线</div><div class="card-desc">自然语言生成 UI 组件，一键替换设计系统变量</div></div>
+<div class="card"><div class="num-badge">05</div><div class="card-icon">📱</div><div class="card-tag">Product</div><div class="card-title">Apple Intelligence 跨设备</div><div class="card-desc">iOS 20 将支持 Mac-iPhone 无缝 AI 上下文共享</div></div>
+<div class="card"><div class="num-badge">06</div><div class="card-icon">🔬</div><div class="card-tag">Research</div><div class="card-title">MCP 协议标准化推进</div><div class="card-desc">Anthropic 发布 MCP 2.0 草案，新增流式工具和多模态支持</div></div>
+</body>
+</html>
