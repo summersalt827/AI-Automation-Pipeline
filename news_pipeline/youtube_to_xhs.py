@@ -9,12 +9,13 @@ Workflow (prefers auto-captions, ~5s):
 Fallback: if captions unavailable, download audio + Whisper transcribe.
 
 Usage:
-    python3 youtube_to_xhs.py <youtube_url>
+    python3 youtube_to_xhs.py <youtube_url>                    # 默认 AI Skills (紫色)
+    python3 youtube_to_xhs.py <youtube_url> --format news      # AI News (蓝/绿)
     python3 youtube_to_xhs.py <youtube_url> --auto-publish
     python3 youtube_to_xhs.py <youtube_url> --force-whisper
     python3 youtube_to_xhs.py <youtube_url> --skip-download --audio /path/to/audio.mp3
 
-Output goes to xiaohongshu/<YYYY-MM-DD>, same format as AI News daily cards.
+Output: xiaohongshu/<YYYY-MM-DD>/  — skills 格式用 skills_card/cover 前缀, news 格式用 card/cover 前缀
 """
 
 from __future__ import annotations
@@ -36,7 +37,8 @@ sys.path.insert(0, str(_SCRIPT_DIR))            # for claude_utils
 sys.path.insert(0, str(_PROJECT_ROOT / "xhs_publish"))  # for render_combined
 
 from claude_utils import call_claude, parse_json_lenient
-from render_combined import save_cards_and_cover, screenshot_htmls
+from render_combined import save_cards_and_cover
+from render_skills import render_and_screenshot as render_skills_and_screenshot
 
 # ── System prompt for Claude distillation ──────────────────────────
 
@@ -238,6 +240,8 @@ def main():
                         help="强制使用 Whisper 转录，跳过 YouTube 字幕")
     parser.add_argument("--auto-publish", action="store_true",
                         help="生成完毕后自动打开小红书创作者中心")
+    parser.add_argument("--format", default="skills", choices=["skills", "news"],
+                        help="输出格式: skills (AI Skills 紫色模板, 默认) | news (AI News 日报)")
     parser.add_argument("--skip-download", action="store_true", help="跳过下载步骤")
     parser.add_argument("--skip-transcribe", action="store_true", help="跳过转录步骤")
     parser.add_argument("--audio", help="已有音频文件路径（配合 --skip-download）")
@@ -319,17 +323,57 @@ def main():
             print(f"   {i}. {c.get('emoji', '📌')} {c.get('title', '?')}")
         print(f"   ✅ 提炼完成 ({len(cards)} 条)")
 
-        # ── Step 4: Generate HTML ──
-        print("🎨 正在生成卡片 HTML...")
-        card_paths, cover_path, caption_path = save_cards_and_cover(
-            cards, output_dir, today
-        )
-        print(f"   ✅ {len(card_paths)} 张卡片 + 封面 + 文案已生成")
+        # ── Step 4: Generate HTML + Screenshot ──
+        if args.format == "skills":
+            print("🎨 正在生成 AI Skills 卡片 (紫色模板, 1080×1440)...")
+            result = render_skills_and_screenshot(
+                cards, output_dir, today,
+                guest_photo=None,
+                guest_name=video_info.get('uploader', ''),
+                guest_role='',
+                eyebrow="PODCAST NOTES",
+                headline_gray="播客", headline_accent="笔记",
+                subtitle=video_info.get('uploader', ''),
+                source_label=video_info.get('title', ''),
+                prefix="skills",
+            )
+            card_paths = result['card_htmls']
+            cover_path = result['cover_html']
+            png_paths = result['all_pngs']
 
-        # ── Step 5: Screenshot ──
-        print("📸 正在截图 (1080×1440 @2x)...")
-        all_html = [cover_path] + card_paths
-        png_paths = screenshot_htmls(all_html, output_dir)
+            # Generate caption
+            caption_lines = [
+                f"🎙️ 播客笔记 | {today}",
+                "",
+                f"本期: {video_info.get('title', '')}",
+                f"嘉宾: {video_info.get('uploader', '')}",
+                "",
+                "─" * 30, "",
+            ]
+            for i, c in enumerate(cards, 1):
+                caption_lines.append(f"{c.get('emoji','')} 0{i} · {c.get('title','')}")
+                caption_lines.append(f"   {c.get('summary','')}")
+                caption_lines.append("")
+            caption_lines += [
+                "─" * 30, "",
+                "每周精选播客深度内容，帮你理解 AI 背后的逻辑 ✨",
+                "右上角关注，下期继续～", "",
+                "#AI播客 #播客笔记 #AI产品 #深度思考 #自我提升 #知识分享 #科技前沿",
+            ]
+            caption_path = output_dir / f"{today}_caption.txt"
+            caption_path.write_text("\n".join(caption_lines), encoding="utf-8")
+            print(f"   ✅ {len(card_paths)} 张卡片 + 封面 + 文案已生成")
+        else:
+            print("🎨 正在生成 AI News 卡片 (蓝/绿模板)...")
+            card_paths, cover_path, caption_path = save_cards_and_cover(
+                cards, output_dir, today
+            )
+            print(f"   ✅ {len(card_paths)} 张卡片 + 封面 + 文案已生成")
+
+            print("📸 正在截图 (full_page)...")
+            from render_combined import screenshot_htmls
+            all_html = [cover_path] + card_paths
+            png_paths = screenshot_htmls(all_html, output_dir)
 
         if png_paths:
             print(f"   ✅ 生成 {len(png_paths)} 张 PNG")
@@ -343,8 +387,12 @@ def main():
         print()
         print("=" * 56)
         print("✅ 全部完成！")
+        print(f"   格式: {'AI Skills (紫色)' if args.format == 'skills' else 'AI News (蓝/绿)'}")
         print(f"   输出目录: {output_dir}")
-        print(f"   封面: {output_dir}/{today}_cover.png" if png_paths else f"   封面: {cover_path}")
+        if png_paths:
+            print(f"   封面: {png_paths[0]}")
+        else:
+            print(f"   封面: {cover_path}")
         print(f"   文案: {caption_path}")
         print(f"   卡片数: {len(cards)}")
         print("=" * 56)
