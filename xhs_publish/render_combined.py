@@ -108,6 +108,11 @@ body{{
   font-family:'Space Mono',monospace;font-size:{_fs(20)}px;color:#64748b;
   margin-top:{_fs(14)}px;font-weight:600;flex-shrink:0;
 }}
+.github-bar{{
+  font-family:'Space Mono','SF Mono',monospace;font-size:{_fs(18)}px;color:#6B6B6B;
+  margin-top:{_fs(8)}px;font-weight:600;text-align:center;letter-spacing:0.2px;flex-shrink:0;
+}}
+.github-bar .gh{{color:#1ca77a;font-weight:700}}
 .caption-pill{{
   align-self:center;padding:{_fs(20)}px {_fs(44)}px;
   border:4px solid #17212d;border-radius:{_fs(28)}px;background:#fff;
@@ -180,6 +185,11 @@ body{{
   box-shadow:{_fs(10)}px {_fs(10)}px 0 rgba(0,0,0,.07);text-align:center;
   flex-shrink:0;
 }}
+.github-bar{{
+  font-family:'Space Mono','SF Mono',monospace;font-size:{_fs(18)}px;color:#6B6B6B;
+  margin-top:{_fs(10)}px;font-weight:600;text-align:center;letter-spacing:0.2px;flex-shrink:0;
+}}
+.github-bar .gh{{color:#1ca77a;font-weight:700}}
 """
 
 
@@ -339,6 +349,7 @@ def _render_card_html(item: dict, idx: int, total: int, date_str: str) -> str:
   <div class="rc-title">{cat_label}</div>
   {ibox_html}
   <div class="rc-footer">{html.escape(source_note)} · {date_display}</div>
+  <div class="github-bar">GitHub: <span class="gh">summersalt827/AI-Automation-Pipeline</span></div>
 </div>
 
 {pill_html}
@@ -402,6 +413,8 @@ def _render_cover_html(items: list[dict], date_str: str) -> str:
 </div>
 
 <div class="caption-pill">{caption_text}</div>
+
+<div class="github-bar">GitHub: <span class="gh">summersalt827/AI-Automation-Pipeline</span></div>
 
 </div>
 </body>

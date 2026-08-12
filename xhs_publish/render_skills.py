@@ -62,6 +62,8 @@ body{
 .insight-text{font-size:26px;font-weight:800;color:#2A2A2A;line-height:1.4}
 .insight-text .hl{color:#5B4FE9}
 .footer-note{text-align:center;margin-top:36px;font-size:16px;color:#B4AEA0;font-weight:600}
+.github-bar{{text-align:center;margin-top:12px;padding:10px 0;font-size:14px;font-weight:600;font-family:'Space Mono','SF Mono',monospace;color:#6B6B6B;letter-spacing:0.3px}}
+.github-bar .gh{{color:#5B4FE9;font-weight:700}}
 """
 
 COVER_CSS = """
@@ -94,6 +96,8 @@ body{
 .ic-emoji{font-size:40px;flex-shrink:0}
 .ic-title{font-size:22px;font-weight:800;color:#2A2A2A;line-height:1.3;word-break:break-word}
 .caption-pill{padding:16px 38px;background:#5B4FE9;color:#fff;border-radius:100px;font-size:20px;font-weight:800;text-align:center;flex-shrink:0}
+.github-bar{{text-align:center;margin-top:14px;padding:8px 0;font-size:14px;font-weight:600;font-family:'Space Mono','SF Mono',monospace;color:#6B6B6B;letter-spacing:0.3px}}
+.github-bar .gh{{color:#5B4FE9;font-weight:700}}
 """
 
 
@@ -187,6 +191,7 @@ def _make_card_html(card: dict, idx: int, guest_photo: str | None = None,
   <div class="insight-text">{kp_text}</div>
 </div>
 <div class="footer-note">{source} · 2026.07.30</div>
+<div class="github-bar">GitHub: <span class="gh">summersalt827/AI-Automation-Pipeline</span></div>
 </div>
 </div>
 </body>
@@ -247,6 +252,7 @@ def _make_cover_html(cards: list[dict], date_str: str,
 {grid_items}
 </div>
 <div class="caption-pill">{caption_pill}</div>
+<div class="github-bar">GitHub: <span class="gh">summersalt827/AI-Automation-Pipeline</span></div>
 </div>
 </div>
 </body>
