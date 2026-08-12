@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Chapter 9 — 30分钟环境搭建指南</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  body{
+    background:#f5f5f5;
+    font-family:'Inter','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+    display:flex;justify-content:center;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .page{
+    width:595px;background:#fff;
+    padding:48px 52px 40px;
+    page-break-after:always;
+    min-height:842px;
+    display:flex;flex-direction:column;
+  }
+
+  .chapter{
+    font-size:8px;font-weight:500;color:#d94f1a;
+    letter-spacing:2.5px;margin-bottom:10px;
+    font-family:'Inter',sans-serif;
+  }
+
+  .title{
+    font-size:20px;font-weight:700;color:#141413;
+    line-height:1.3;margin-bottom:8px;
+  }
+  .title .accent{color:#d94f1a}
+
+  .subtitle{
+    font-size:10px;color:#8a8983;line-height:1.65;
+    margin-bottom:28px;
+  }
+
+  .section-label{
+    font-size:7px;color:#d94f1a;font-weight:500;
+    letter-spacing:1.8px;margin:24px 0 8px;
+    font-family:'Inter',sans-serif;
+  }
+
+  .section-heading{
+    font-size:13px;font-weight:600;color:#141413;
+    margin-bottom:8px;
+  }
+
+  .para{
+    font-size:10px;color:#3a3a35;line-height:1.75;
+    margin-bottom:12px;
+  }
+
+  .step-box{
+    border:1px solid #e8e6dc;padding:14px 16px;
+    margin-bottom:10px;display:flex;align-items:flex-start;
+    gap:12px;
+  }
+  .step-num{
+    width:20px;height:20px;border-radius:50%;
+    background:#d94f1a;color:#fff;
+    font-size:9px;font-weight:700;
+    display:flex;align-items:center;
+    justify-content:center;flex-shrink:0;
+    font-family:'Inter',sans-serif;
+  }
+  .step-content{}
+  .step-title{
+    font-size:10px;font-weight:600;color:#141413;
+    margin-bottom:3px;
+  }
+  .step-desc{
+    font-size:9px;color:#3a3a35;line-height:1.6;
+  }
+
+  .code-block{
+    background:#f8f8f6;padding:14px 18px;
+    margin:10px 0;font-family:'SF Mono','Consolas','Menlo',monospace;
+    font-size:9px;color:#3a3a35;line-height:1.8;
+    border-radius:4px;overflow-x:auto;
+  }
+  .code-block .cmd{color:#d94f1a}
+  .code-block .cmt{color:#8a8983}
+
+  .insight{
+    background:#fdf8f5;border-left:3px solid #d94f1a;
+    padding:14px 18px;margin:16px 0;
+  }
+  .insight-label{
+    font-size:7px;color:#d94f1a;font-weight:600;
+    letter-spacing:1.5px;margin-bottom:6px;
+    font-family:'Inter',sans-serif;
+  }
+  .insight-text{
+    font-size:10px;color:#141413;line-height:1.7;
+  }
+
+  .checklist{display:flex;flex-direction:column;gap:6px;margin:12px 0}
+  .check-item{
+    font-size:9px;color:#3a3a35;line-height:1.6;
+    padding-left:18px;position:relative;
+  }
+  .check-item::before{
+    content:'☐';position:absolute;left:0;
+    color:#d94f1a;font-size:10px;top:0;
+  }
+
+  .verify-box{
+    background:#e8f5e9;border:1px solid #4caf50;
+    border-radius:6px;padding:14px 18px;margin:16px 0;
+  }
+  .verify-box .label{
+    font-size:7px;color:#2e7d32;font-weight:600;
+    letter-spacing:1.5px;margin-bottom:6px;
+    font-family:'Inter',sans-serif;
+  }
+  .verify-box .text{
+    font-size:10px;color:#1b5e20;line-height:1.7;
+    font-family:'SF Mono','Consolas','Menlo',monospace;
+  }
+
+  .footer{
+    text-align:center;margin-top:auto;padding-top:30px;
+    font-size:8px;color:#8a8983;
+  }
+</style>
+</head>
+<body>
+
+<!-- Page 1: 安装 Claude Code + DeepSeek 注册 -->
+<div class="page">
+<div class="chapter">C H A P T E R &nbsp; 0 9</div>
+<div class="title">30分钟<span class="accent">环境搭建</span>指南</div>
+<div class="subtitle">从零开始装好 Claude Code + DeepSeek API，安装 5 个开箱即用的 AI Skills。不需要写一行代码，跟着走就行。</div>
+
+<div class="section-label">9 . 1</div>
+<div class="section-heading">安装 Claude Code（终端 Agent）</div>
+<div class="para">Claude Code 是 Anthropic 推出的终端 AI Agent，能直接操作文件系统、运行命令、执行多步任务。它是运行所有 Skills 的基础环境。</div>
+
+<div class="section-label">M A C O S</div>
+<div class="step-box">
+<div class="step-num">1</div>
+<div class="step-content">
+<div class="step-title">安装 Node.js 18+（如未安装）</div>
+<div class="step-desc">打开终端（Terminal），先跑 <code style="color:#d94f1a">node --version</code>。如果显示 v18 以上版本，跳过此步。否则去 nodejs.org 下载 LTS 版安装。</div>
+</div>
+</div>
+
+<div class="step-box">
+<div class="step-num">2</div>
+<div class="step-content">
+<div class="step-title">全局安装 Claude Code</div>
+<div class="code-block"><span class="cmd">npm install -g @anthropic-ai/claude-code</span></div>
+<div class="step-desc">一行命令装好。安装完成后在终端输入 <code style="color:#d94f1a">claude</code> 即可启动。</div>
+</div>
+</div>
+
+<div class="step-box">
+<div class="step-num">3</div>
+<div class="step-content">
+<div class="step-title">安装 Playwright（截图用，可选）</div>
+<div class="code-block"><span class="cmd">pip3 install playwright</span><br><span class="cmd">python3 -m playwright install chromium</span></div>
+</div>
+</div>
+
+<div class="section-label">W I N D O W S</div>
+<div class="para">同样先装 Node.js → 打开 PowerShell 跑 <code style="color:#d94f1a">npm install -g @anthropic-ai/claude-code</code>。如果遇到权限问题，以管理员身份运行 PowerShell。</div>
+
+<div class="insight">
+<div class="insight-label">T I P</div>
+<div class="insight-text">macOS 用户也可以用 Homebrew 一键装 Node.js：<code style="color:#d94f1a">brew install node</code>。装完 Node 后全程不超过 5 分钟。</div>
+</div>
+
+<div class="footer">2026 AI 入门白皮书 · 22</div>
+</div>
+
+<!-- Page 2: DeepSeek API -->
+<div class="page">
+<div class="chapter">C H A P T E R &nbsp; 0 9</div>
+<div class="title"><span class="accent">DeepSeek</span> API 注册与配置</div>
+<div class="subtitle">白皮书中所有案例、Skills、自动化流程都通过 DeepSeek API 驱动。性价比最高的选择——能力和 GPT-4 同级别，价格不到 1/10。</div>
+
+<div class="section-label">9 . 2</div>
+<div class="section-heading">注册并获取 API Key（5 分钟）</div>
+
+<div class="step-box">
+<div class="step-num">1</div>
+<div class="step-content">
+<div class="step-title">注册 DeepSeek 账号</div>
+<div class="step-desc">打开 platform.deepseek.com，用邮箱或 Google 账号注册。</div>
+</div>
+</div>
+
+<div class="step-box">
+<div class="step-num">2</div>
+<div class="step-content">
+<div class="step-title">进入 API Keys 页面</div>
+<div class="step-desc">左侧菜单 → API Keys → 点击「创建 API Key」，复制保存。⚠️ Key 只显示一次，务必存好。</div>
+</div>
+</div>
+
+<div class="step-box">
+<div class="step-num">3</div>
+<div class="step-content">
+<div class="step-title">充值 ¥10 起</div>
+<div class="step-desc">左侧菜单 → Billing → 充值。DeepSeek 按量计费，¥10 够个人用一个月以上。</div>
+</div>
+</div>
+
+<div class="section-label">9 . 3</div>
+<div class="section-heading">配置 Claude Code 使用 DeepSeek</div>
+<div class="para">Claude Code 默认使用 Anthropic 官方 API。我们要让它走 DeepSeek 的 Anthropic 兼容端点。在终端中设置以下环境变量：</div>
+
+<div class="code-block">
+<span class="cmt"># 添加到 ~/.zshrc (macOS) 或 ~/.bashrc (Linux/WSL)</span><br>
+<span class="cmd">export ANTHROPIC_API_KEY</span>="sk-你的DeepSeek-API-Key"<br>
+<span class="cmd">export ANTHROPIC_BASE_URL</span>="https://api.deepseek.com/anthropic"<br>
+<span class="cmd">export ANTHROPIC_MODEL</span>="deepseek-v4-pro[1m]"<br>
+<br>
+<span class="cmt"># 保存后刷新</span><br>
+<span class="cmd">source</span> ~/.zshrc
+</div>
+
+<div class="para">配置完成后，在终端输入 <code style="color:#d94f1a">claude</code>，看到 Claude Code 的交互界面就说明通了。</div>
+
+<div class="insight">
+<div class="insight-label">为 什 么 用 DeepSeek 而 不 是 官 方 Claude API</div>
+<div class="insight-text">DeepSeek-V4 在 Anthropic 兼容模式下性能接近 Claude Opus 4，但价格仅为官方 API 的 1/8–1/10。对个人和小团队来说，这是目前性价比最高的方案。百万 token 不到 ¥2，跑一次 AI News 周报全流程只花约 ¥0.5。</div>
+</div>
+
+<div class="footer">2026 AI 入门白皮书 · 23</div>
+</div>
+
+<!-- Page 3: Install Skills + verify -->
+<div class="page">
+<div class="chapter">C H A P T E R &nbsp; 0 9</div>
+<div class="title">安装 <span class="accent">AI Skills</span> + 跑通验证</div>
+<div class="subtitle">5 个开箱即用的 Skills 直装到你的 Claude Code。每个 Skill 都是一份 Markdown 文件，装好就能用。</div>
+
+<div class="section-label">9 . 4</div>
+<div class="section-heading">安装 5 个 AI Skills（2 分钟）</div>
+
+<div class="para">确保已安装 GitHub CLI（<code style="color:#d94f1a">brew install gh</code> 或从 github.com/cli/cli 下载），然后依次运行：</div>
+
+<div class="code-block">
+<span class="cmt"># 1. AI News 周报 — 邮箱拉取→聚合→精选→卡片→发布</span><br>
+<span class="cmd">gh skill install</span> summersalt827/ai-news-weekly<br>
+<br>
+<span class="cmt"># 2. AI Skills 深度 — 紫色长图文卡片 (cover+p1~p5)</span><br>
+<span class="cmd">gh skill install</span> summersalt827/ai-skills-deep-dive<br>
+<br>
+<span class="cmt"># 3. AI 内容工厂 — 一句话生成工具介绍卡片</span><br>
+<span class="cmd">gh skill install</span> summersalt827/xhs-content-engine<br>
+<br>
+<span class="cmt"># 4. 设计风格提取 — 截图→Token→组件→套用</span><br>
+<span class="cmd">gh skill install</span> summersalt827/design-style-reference<br>
+<br>
+<span class="cmt"># 5. 竞品参考 — 5个项目分析 + P0-P3优化表</span><br>
+<span class="cmd">gh skill install</span> summersalt827/ai-competitive-reference
+</div>
+
+<div class="section-label">9 . 5</div>
+<div class="section-heading">验证跑通</div>
+<div class="para">装好后，在 Claude Code 中试着说一句话来验证：</div>
+
+<div class="verify-box">
+<div class="label">✓ 验 证 命 令</div>
+<div class="text">AI Skills，帮我做一个选题：<br>"普通人如何用 AI 提升工作效率"</div>
+</div>
+
+<div class="para">如果 Claude Code 开始读取 AI Skills 的 Skill 定义、生成卡片结构，说明整个环境搭建成功了。</div>
+
+<div class="insight">
+<div class="insight-label">从 这 里 开 始</div>
+<div class="insight-text">环境搭好后，回到第四章，选一个日常场景开始 Agent 化。或者直接对 Claude Code 说 "AI news" 跑一次周报全流程。从"问 AI"到"让 AI 干"——你现在有了完整的工具箱。</div>
+</div>
+
+<div class="section-label">快 速 参 考</div>
+<div class="para" style="font-size:9px">
+<b>Claude Code 文档</b>: docs.anthropic.com/claude-code<br>
+<b>DeepSeek 平台</b>: platform.deepseek.com<br>
+<b>GitHub Skills 仓库</b>: github.com/summersalt827/AI-Automation-Pipeline<br>
+<b>社区提问</b>: 搜索 "Claude Code 教程" 或加入相关社群
+</div>
+
+<div class="footer">2026 AI 入门白皮书 · 24</div>
+</div>
+
+</body>
+</html>
